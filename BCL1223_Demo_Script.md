@@ -40,84 +40,48 @@
 
 > *"Here's my database running in a Dockerized Oracle instance inside this Codespace."*
 
+Run each file one at a time and explain after each:
+
 ```bash
-# Run all proof queries at once:
-docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < demo_queries.sql
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 01_show_tables.sql
 ```
 
-Or step by step:
+> *"11 tables — all normalized to 3NF."*
 
-**Step 2a — Show 11 tables + row counts:**
-
-```sql
-SELECT table_name FROM user_tables ORDER BY table_name;
+```bash
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 02_row_counts.sql
 ```
 
-> *"11 tables — all normalized to 3NF. 228 rows of seed data total."*
+> *"228 rows of seed data."*
 
-**Step 2b — Run rejection test** (the most impressive part):
-
-```sql
--- Try to insert a president who isn't a member yet
-INSERT INTO club_president (club_id, student_id, appointment_date) VALUES ('C001', 'aa1001', SYSDATE);
+```bash
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 03_constraint_test.sql
 ```
 
-> *"Oracle rejects it because aa1001 isn't a member of club C001. This is the composite FK I mentioned — `fk_president_membership` references the MEMBERSHIP table. The database enforces the rule, not the application code."*
+> *"This is the most impressive part — Oracle rejects it because aa1001 isn't a member of club C001. This is the composite FK `fk_president_membership` that references MEMBERSHIP. The database enforces the rule, not the application code."*
 
 ### 3. Run 3 Queries Live → "Reports" (2-3 min)
 
 **Query 1 — Multi-club advisors** (JOIN + GROUP BY + HAVING):
 
-```sql
-SELECT a.advisor_name,
-       COUNT(c.club_id) AS number_of_clubs,
-       LISTAGG(c.club_name, '; ') WITHIN GROUP (ORDER BY c.club_name) AS assigned_clubs
-FROM advisor a
-JOIN club c ON c.advisor_id = a.advisor_id
-GROUP BY a.advisor_id, a.advisor_name
-HAVING COUNT(c.club_id) > 1
-ORDER BY a.advisor_name;
+```bash
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 04_query_multiclub_advisors.sql
 ```
 
 > *"Management wanted to know which lecturers advise more than one club. The JOIN links advisors to their clubs, GROUP BY counts them, HAVING filters for 2+, and LISTAGG shows which clubs."*
 
 **Query 2 — Missing approval forms** (correlated subquery):
 
-```sql
-SELECT s.student_id, s.student_name, s.phone_number
-FROM student s
-WHERE s.approval_form = 'N'
-  AND EXISTS (
-      SELECT 1 FROM membership m WHERE m.student_id = s.student_id
-  )
-ORDER BY s.student_name;
+```bash
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 05_query_missing_forms.sql
 ```
 
 > *"Staff need to call students who joined a club but haven't submitted their faculty approval form. The correlated subquery with EXISTS ensures we only list students who actually enrolled in a club — not those who never signed up."*
 
 **Query 3 — Pivot by semester** (spreadsheet output):
 
-```sql
-SELECT advisor_name,
-       NVL(may_aug_2026, 0) AS may_aug_2026,
-       NVL(sep_dec_2026, 0) AS sep_dec_2026,
-       NVL(jan_apr_2027, 0) AS jan_apr_2027
-FROM (
-    SELECT a.advisor_name, s.semester_name, e.event_id
-    FROM advisor a
-    LEFT JOIN club c ON c.advisor_id = a.advisor_id
-    LEFT JOIN event e ON e.club_id = c.club_id
-    LEFT JOIN semester s ON s.semester_id = e.semester_id
-)
-PIVOT (
-    COUNT(event_id)
-    FOR semester_name IN (
-        'May-Aug 2026' AS may_aug_2026,
-        'Sep-Dec 2026' AS sep_dec_2026,
-        'Jan-Apr 2027' AS jan_apr_2027
-    )
-)
-ORDER BY advisor_name;
+```bash
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 06_query_pivot.sql
 ```
 
 > *"This uses Oracle's PIVOT to turn semester rows into columns. Now staff can see at a glance: Dr. Aisha has 3 events every semester. Only advisors with assigned events appear — hence 10 rows not 15."*
@@ -158,9 +122,14 @@ ORDER BY advisor_name;
 
 ## Terminal Quick Reference (copy-paste these)
 
-| What | Command |
+| Step | Command |
 |------|---------|
-| Run all proof queries | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < demo_queries.sql` |
+| 1. Show 11 tables | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 01_show_tables.sql` |
+| 2. Row counts | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 02_row_counts.sql` |
+| 3. Constraint test | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 03_constraint_test.sql` |
+| 4. Multi-club advisors | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 04_query_multiclub_advisors.sql` |
+| 5. Missing forms | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 05_query_missing_forms.sql` |
+| 6. Pivot table | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 06_query_pivot.sql` |
+| Run all at once | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < demo_queries.sql` |
 | Interactive SQL | `docker exec -it oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1` |
-| Run your build script | `./run_sql.sh` |
-| Check Oracle is alive | `docker exec oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 "SELECT 1 FROM dual;"` |
+| Build database | `./run_sql.sh` |
