@@ -45,32 +45,49 @@ The database contains **11 normalized relations** with referential integrity enf
 
 ---
 
-## Quick start: run the database on Oracle Live SQL
+## Quick start: run the SQL (two ways)
+
+### Option A: Docker (in Codespace)
+
+```bash
+./run_sql.sh
+```
+
+This runs `20260718_Database_Fundamentals_Assignment_LiveSQL.sql` against the local Oracle container.
+
+### Option B: Oracle Live SQL (fallback)
 
 1. Go to [https://livesql.oracle.com/](https://livesql.oracle.com/) and sign in.
 2. Click **SQL Worksheet**.
 3. Open `20260718_Database_Fundamentals_Assignment_LiveSQL.sql` from this repo.
 4. Copy the entire contents into the worksheet.
-5. Click **Run** (or press `Ctrl+Enter` / `Cmd+Enter`).
-6. The script will:
-   - Drop any existing tables (if rerunning)
-   - Create all 11 tables and constraints
-   - Insert sample data (10 faculties, 30 students, 15 clubs, 50 memberships, etc.)
-   - Execute the required queries and validation tests
+5. Click **Run**.
+
+### What the script does
+- Drop any existing tables (safe to rerun)
+- Create all 11 tables and constraints
+- Insert sample data (10 faculties, 30 students, 15 clubs, 50 memberships, etc.)
+- Execute the required queries and validation tests
 
 ---
 
 ## Presenting with GitHub Codespaces (recommended)
 
-This repo is configured with a GitHub Codespace — the easiest way to present during your demo.
+This repo is configured with a GitHub Codespace that runs **Oracle Database Free** inside a Docker container — no external website needed for the demo.
 
 1. Click the **"Open in GitHub Codespaces"** badge at the top of this README (or go to `Code > Codespaces > Create codespace on main`)
-2. In Codespace, open `BCL1223_Demo_Script.md` in the VS Code editor to follow your demo flow
-3. Preview the report: right-click `20260718_Database_Fundamentals_Assignment.md` > **Open Preview**
-4. For the live SQL portion, switch to your browser tab with **Oracle Live SQL**: https://livesql.oracle.com/
-5. Copy the contents of `20260718_Database_Fundamentals_Assignment_LiveSQL.sql` into Live SQL and run it
-
-You have the full VS Code editor, file tree, and terminal available — the lecturer will see your screen as you navigate everything from one place.
+2. Wait for the setup to complete (~3 minutes for first time — Docker pulls and starts Oracle)
+3. In Codespace, open `BCL1223_Demo_Script.md` to follow your demo flow
+4. Preview the report: right-click `20260718_Database_Fundamentals_Assignment.md` > **Open Preview**
+5. Open the terminal (`Ctrl+\`` / `Cmd+\``) and run your SQL:
+   ```bash
+   ./run_sql.sh
+   ```
+   Or for an interactive SQL session:
+   ```bash
+   docker exec -it oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1
+   ```
+6. You have the full VS Code editor, file tree, and terminal — demo everything from one place.
 
 ---
 

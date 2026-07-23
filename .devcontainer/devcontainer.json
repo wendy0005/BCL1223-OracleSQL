@@ -11,5 +11,7 @@
       ]
     }
   },
-  "postCreateCommand": "echo '✅ Codespace ready. Open BCL1223_Demo_Script.md for the demo walkthrough. Run SQL queries on Oracle Live SQL: https://livesql.oracle.com/'"
+  "forwardPorts": [1521],
+  "postCreateCommand": "bash .devcontainer/setup-oracle.sh",
+  "postStartCommand": "docker start oracle-demo 2>/dev/null || true"
 }
