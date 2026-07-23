@@ -1,0 +1,15 @@
+{
+  "name": "BCL1223 Database Fundamentals Demo",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bierner.markdown-preview-github-styles",
+        "yzhang.markdown-all-in-one",
+        "tomphillips85.vscode-oracle",
+        "ms-python.python"
+      ]
+    }
+  },
+  "postCreateCommand": "echo '✅ Codespace ready. Open BCL1223_Demo_Script.md for the demo walkthrough. Run SQL queries on Oracle Live SQL: https://livesql.oracle.com/'"
+}

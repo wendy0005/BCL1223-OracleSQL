@@ -1,5 +1,7 @@
 # BCL1223 Database Fundamentals — SEGi Student Clubs and Societies Database
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/wendy0005/BCL1223-OracleSQL)
+
 This repository contains the continuous assessment submission for **BCL1223 Database Fundamentals**.
 
 | | |
@@ -58,6 +60,20 @@ The database contains **11 normalized relations** with referential integrity enf
 
 ---
 
+## Presenting with GitHub Codespaces (recommended)
+
+This repo is configured with a GitHub Codespace — the easiest way to present during your demo.
+
+1. Click the **"Open in GitHub Codespaces"** badge at the top of this README (or go to `Code > Codespaces > Create codespace on main`)
+2. In Codespace, open `BCL1223_Demo_Script.md` in the VS Code editor to follow your demo flow
+3. Preview the report: right-click `20260718_Database_Fundamentals_Assignment.md` > **Open Preview**
+4. For the live SQL portion, switch to your browser tab with **Oracle Live SQL**: https://livesql.oracle.com/
+5. Copy the contents of `20260718_Database_Fundamentals_Assignment_LiveSQL.sql` into Live SQL and run it
+
+You have the full VS Code editor, file tree, and terminal available — the lecturer will see your screen as you navigate everything from one place.
+
+---
+
 ## Key design highlights
 
 - **Normalized to 3NF** — no repeating groups, no partial dependencies, no transitive dependencies.
@@ -81,7 +97,6 @@ See `BCL1223_Demo_Script.md` for the full 5–7 minute demo script, including:
 ## Notes
 
 - This is a fictional assessment dataset. Club names were inspired by publicly listed SEGi College student organisations but do not represent live operational records.
-- The `signature_no_bg.png` file was intentionally excluded from this repository for privacy reasons.
 
 ---
 
