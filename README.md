@@ -73,21 +73,28 @@ This runs `20260718_Database_Fundamentals_Assignment_LiveSQL.sql` against the lo
 
 ## Presenting with GitHub Codespaces (recommended)
 
-This repo is configured with a GitHub Codespace that runs **Oracle Database Free** inside a Docker container — no external website needed for the demo.
+This repo is configured with a GitHub Codespace that runs **Oracle Database Free** + **CloudBeaver GUI** inside Docker containers — no external website needed.
 
-1. Click the **"Open in GitHub Codespaces"** badge at the top of this README (or go to `Code > Codespaces > Create codespace on main`)
-2. Wait for the setup to complete (~3 minutes for first time — Docker pulls and starts Oracle)
-3. In Codespace, open `BCL1223_Demo_Script.md` to follow your demo flow
-4. Preview the report: right-click `20260718_Database_Fundamentals_Assignment.md` > **Open Preview**
-5. Open the terminal (`Ctrl+\`` / `Cmd+\``) and run your SQL:
-   ```bash
-   ./run_sql.sh
-   ```
-   Or for an interactive SQL session:
-   ```bash
-   docker exec -it oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1
-   ```
-6. You have the full VS Code editor, file tree, and terminal — demo everything from one place.
+1. Click the **"Open in GitHub Codespaces"** badge at the top of this README
+2. Wait for setup to complete (~5 min first time — pulls Oracle + CloudBeaver images)
+3. VS Code will auto-open CloudBeaver in a browser tab at `http://localhost:8978`
+4. Create an admin account on first visit, then add a database connection:
+   - **Host:** `localhost` | **Port:** `1521`
+   - **Database:** `FREEPDB1` | **User:** `system` | **Password:** `oracle`
+5. You now have a full GUI — click tables to explore data, use the SQL Editor to run queries
+6. Also open `BCL1223_Demo_Script.md` and preview the report for the demo walkthrough
+
+### What CloudBeaver gives you
+- **Database Navigator** — expand tables, see columns and data types at a glance
+- **Data viewer** — double-click any table to browse all rows in a grid
+- **SQL Editor** — write queries, execute, see results in a table
+- **Connection panel** — manage multiple Oracle connections
+
+### Terminal (backup)
+```bash
+./run_sql.sh                    # Build the whole database
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 01_show_tables.sql
+```
 
 ---
 

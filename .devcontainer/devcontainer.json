@@ -6,13 +6,18 @@
       "extensions": [
         "bierner.markdown-preview-github-styles",
         "yzhang.markdown-all-in-one",
-        "ms-python.python",
-        "mtxr.sqltools",
-        "mtxr.sqltools-driver-oracle"
+        "ms-python.python"
       ]
     }
   },
-  "forwardPorts": [1521],
+  "forwardPorts": [1521, 8978],
+  "portsAttributes": {
+    "8978": {
+      "label": "CloudBeaver GUI",
+      "onAutoForward": "openBrowser",
+      "requireLocalPort": false
+    }
+  },
   "postCreateCommand": "bash .devcontainer/setup-oracle.sh",
-  "postStartCommand": "docker start oracle-demo 2>/dev/null || true"
+  "postStartCommand": "bash .devcontainer/start-containers.sh"
 }

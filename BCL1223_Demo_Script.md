@@ -11,7 +11,7 @@
 ## Before Demo (have these ready)
 
 - [ ] **GitHub Codespace** open in your browser (this is your main demo window)
-- [ ] **Codespace terminal**: `./run_sql.sh` already done (database built and populated)
+- [ ] **CloudBeaver** tab open at `http://localhost:8978` — connected to Oracle
 - [ ] **VS Code**: `20260718_Database_Fundamentals_Assignment.md` open in Preview (Ctrl+Shift+V)
 - [ ] **Camera**: On. No need to dress up, just be presentable
 - [ ] **Mute notifications** on your PC
@@ -120,7 +120,17 @@ docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 06_
 
 **Your DB:** Oracle AI Database 26ai Free 23.26.2.0.0
 
-## Terminal Quick Reference (copy-paste these)
+## CloudBeaver Connection Details
+
+| Field | Value |
+|-------|-------|
+| **Host** | `localhost` |
+| **Port** | `1521` |
+| **Database** | `FREEPDB1` |
+| **Username** | `system` |
+| **Password** | `oracle` |
+
+## Terminal Quick Reference
 
 | Step | Command |
 |------|---------|
