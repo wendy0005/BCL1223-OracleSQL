@@ -79,7 +79,7 @@ This repo is configured with a GitHub Codespace that runs **Oracle Database Free
 2. Wait for setup to complete (~5 min first time — pulls Oracle + CloudBeaver images)
 3. VS Code will auto-open CloudBeaver in a browser tab at `http://localhost:8978`
 4. Create an admin account on first visit, then add a database connection:
-   - **Host:** `localhost` | **Port:** `1521`
+   - **Host:** `oracle-demo` | **Port:** `1521`
    - **Database:** `FREEPDB1` | **User:** `system` | **Password:** `oracle`
 5. You now have a full GUI — click tables to explore data, use the SQL Editor to run queries
 6. Also open `BCL1223_Demo_Script.md` and preview the report for the demo walkthrough

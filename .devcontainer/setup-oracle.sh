@@ -3,6 +3,9 @@ set -e
 
 echo "=== BCL1223 Oracle Demo Setup ==="
 
+# Ensure Docker network exists
+docker network create oracle-net 2>/dev/null || true
+
 # --------------- Oracle Free Container ---------------
 if docker container inspect oracle-demo > /dev/null 2>&1; then
   status=$(docker inspect -f '{{.State.Status}}' oracle-demo 2>/dev/null)
@@ -17,10 +20,26 @@ else
   docker pull gvenzl/oracle-free:latest
   echo "=== Starting Oracle Free container ==="
   docker run -d --name oracle-demo \
+    --network oracle-net \
     -p 1521:1521 \
     -e ORACLE_PASSWORD=oracle \
     gvenzl/oracle-free:latest
 fi
+
+# Ensure oracle-demo is on the network
+docker network connect oracle-net oracle-demo 2>/dev/null || true
+
+# --------------- Wait for Oracle ---------------
+echo "=== Waiting for Oracle database to be ready ==="
+for i in $(seq 1 120); do
+  if docker logs oracle-demo 2>&1 | grep -q "DATABASE IS READY TO USE"; then
+    echo ""
+    echo "=== Oracle is ready! ==="
+    break
+  fi
+  printf "."
+  sleep 5
+done
 
 # --------------- CloudBeaver GUI Container ---------------
 if docker container inspect cloudbeaver > /dev/null 2>&1; then
@@ -36,33 +55,17 @@ else
   docker pull dbeaver/cloudbeaver:latest
   echo "=== Starting CloudBeaver container ==="
   docker run -d --name cloudbeaver \
-    --network container:oracle-demo \
+    --network oracle-net \
+    -p 8978:8978 \
     dbeaver/cloudbeaver:latest
 fi
-
-# --------------- Network ---------------
-# Ensure both containers can communicate
-docker network create oracle-net 2>/dev/null || true
-docker network connect oracle-net oracle-demo 2>/dev/null || true
 docker network connect oracle-net cloudbeaver 2>/dev/null || true
-
-# --------------- Wait for Oracle ---------------
-echo "=== Waiting for Oracle database to be ready ==="
-for i in $(seq 1 120); do
-  if docker logs oracle-demo 2>&1 | grep -q "DATABASE IS READY TO USE"; then
-    echo ""
-    echo "=== Oracle is ready! ==="
-    break
-  fi
-  printf "."
-  sleep 5
-done
 
 echo ""
 echo "=== CloudBeaver starting up (port 8978) ==="
 echo "Open http://localhost:8978 in the Codespace browser"
 echo "Create admin account on first visit, then add connection:"
-echo "  Host: localhost | Port: 1521"
+echo "  Host: oracle-demo | Port: 1521"
 echo "  Database: FREEPDB1 | User: system | Password: oracle"
 echo ""
 echo "=== Terminal commands ==="

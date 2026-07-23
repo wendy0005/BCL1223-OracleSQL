@@ -124,7 +124,7 @@ docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 06_
 
 | Field | Value |
 |-------|-------|
-| **Host** | `localhost` |
+| **Host** | `oracle-demo` |
 | **Port** | `1521` |
 | **Database** | `FREEPDB1` |
 | **Username** | `system` |
