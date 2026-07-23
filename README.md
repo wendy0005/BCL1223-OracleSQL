@@ -88,7 +88,13 @@ This repo is configured with a GitHub Codespace that runs **Oracle Database Free
 - **Database Navigator** — expand tables, see columns and data types at a glance
 - **Data viewer** — double-click any table to browse all rows in a grid
 - **SQL Editor** — write queries, execute, see results in a table
-- **Connection panel** — manage multiple Oracle connections
+
+### Quick Run: right-click any .sql file → Run Code
+The **Code Runner** extension is pre-installed. Open a `.sql` file, right-click, and select **Run Code** (or press `Ctrl+Alt+N`). It runs the file against Oracle and shows output in the terminal.
+
+![Right click → Run Code]
+
+Best for demo: open each `01_*.sql`, right-click, run, explain, repeat.
 
 ### Terminal (backup)
 ```bash

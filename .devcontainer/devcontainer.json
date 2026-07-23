@@ -6,8 +6,18 @@
       "extensions": [
         "bierner.markdown-preview-github-styles",
         "yzhang.markdown-all-in-one",
-        "ms-python.python"
-      ]
+        "ms-python.python",
+        "formulahendry.code-runner"
+      ],
+      "settings": {
+        "code-runner.executorMap": {
+          "sql": "docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < $fullFileName"
+        },
+        "code-runner.saveAllFilesBeforeRun": true,
+        "code-runner.runInTerminal": true,
+        "code-runner.preserveFocus": true,
+        "code-runner.showExecutionMessage": false
+      }
     }
   },
   "forwardPorts": [1521, 8978],

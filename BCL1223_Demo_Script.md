@@ -34,56 +34,35 @@
 > 
 > Everything is normalized to 3NF — no repeating groups, no transitive dependencies."*
 
-### 2. Switch to Codespace Terminal → "Show it working" (1.5 min)
+### 2. Switch to Code Runner → "Show it working" (1.5 min)
 
-**Share your Codespace terminal** (screen share the whole window).
+**Share your Codespace** (screen share the whole window).
 
 > *"Here's my database running in a Dockerized Oracle instance inside this Codespace."*
 
-Run each file one at a time and explain after each:
+Open each `.sql` file, right-click → **Run Code** (or `Ctrl+Alt+N`), explain after each:
 
-```bash
-docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 01_show_tables.sql
-```
+**File `01_show_tables.sql`** → Run Code
 
 > *"11 tables — all normalized to 3NF."*
 
-```bash
-docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 02_row_counts.sql
-```
+**File `02_row_counts.sql`** → Run Code
 
 > *"228 rows of seed data."*
 
-```bash
-docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 03_constraint_test.sql
-```
+**File `03_constraint_test.sql`** → Run Code
 
 > *"This is the most impressive part — Oracle rejects it because aa1001 isn't a member of club C001. This is the composite FK `fk_president_membership` that references MEMBERSHIP. The database enforces the rule, not the application code."*
 
 ### 3. Run 3 Queries Live → "Reports" (2-3 min)
 
-**Query 1 — Multi-club advisors** (JOIN + GROUP BY + HAVING):
-
-```bash
-docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 04_query_multiclub_advisors.sql
-```
-
+**Query 1 — Multi-club advisors** → open `04_query_multiclub_advisors.sql` → **Run Code**
 > *"Management wanted to know which lecturers advise more than one club. The JOIN links advisors to their clubs, GROUP BY counts them, HAVING filters for 2+, and LISTAGG shows which clubs."*
 
-**Query 2 — Missing approval forms** (correlated subquery):
-
-```bash
-docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 05_query_missing_forms.sql
-```
-
+**Query 2 — Missing approval forms** → open `05_query_missing_forms.sql` → **Run Code**
 > *"Staff need to call students who joined a club but haven't submitted their faculty approval form. The correlated subquery with EXISTS ensures we only list students who actually enrolled in a club — not those who never signed up."*
 
-**Query 3 — Pivot by semester** (spreadsheet output):
-
-```bash
-docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 06_query_pivot.sql
-```
-
+**Query 3 — Pivot by semester** → open `06_query_pivot.sql` → **Run Code**
 > *"This uses Oracle's PIVOT to turn semester rows into columns. Now staff can see at a glance: Dr. Aisha has 3 events every semester. Only advisors with assigned events appear — hence 10 rows not 15."*
 
 ### 4. Wrap-up (30 sec)
@@ -119,6 +98,13 @@ docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < 06_
 **Your 6 queries:** phone list, multi-club advisors, missing forms, event schedule, pivot table, club assignments
 
 **Your DB:** Oracle AI Database 26ai Free 23.26.2.0.0
+
+## VS Code: Right-click → Run Code
+
+**Code Runner** is pre-installed. For any `.sql` file:
+- Right-click in the editor → **Run Code** (or `Ctrl+Alt+N`)
+- File runs against Oracle, output appears in terminal tab
+- Use this for each demo step instead of typing terminal commands
 
 ## CloudBeaver Connection Details
 
