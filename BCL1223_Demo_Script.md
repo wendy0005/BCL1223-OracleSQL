@@ -10,8 +10,9 @@
 
 ## Before Demo (have these ready)
 
-- [ ] **Browser 1**: [OneCompiler Oracle Playground](https://onecompiler.com/oracle#draft-hn67) (or Oracle Live SQL) (database populated)
-- [ ] **Browser 2** or PDF: Your report open
+- [ ] **GitHub Codespace** open in your browser (this is your main demo window)
+- [ ] **Codespace terminal**: `./run_sql.sh` already done (database built and populated)
+- [ ] **VS Code**: `20260718_Database_Fundamentals_Assignment.md` open in Preview (Ctrl+Shift+V)
 - [ ] **Camera**: On. No need to dress up, just be presentable
 - [ ] **Mute notifications** on your PC
 
@@ -33,24 +34,28 @@
 > 
 > Everything is normalized to 3NF — no repeating groups, no transitive dependencies."*
 
-### 2. Switch to Oracle Live SQL → "Show it working" (1.5 min)
+### 2. Switch to Codespace Terminal → "Show it working" (1.5 min)
 
-**Share your Oracle Live SQL tab.**
+**Share your Codespace terminal** (screen share the whole window).
 
-> *"Here's my database running on Oracle Live SQL."*
+> *"Here's my database running in a Dockerized Oracle instance inside this Codespace."*
 
-Run row count:
-
-```sql
--- Queries Oracle metadata schema to list all user tables.
--- Note: This returns 1 metadata row per table name. 
--- To get actual data rows inside tables, use: SELECT table_name, num_rows FROM user_tables;
-SELECT table_name, COUNT(*) AS row_count FROM user_tables GROUP BY table_name;
+```bash
+# Run all proof queries at once:
+docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < demo_queries.sql
 ```
 
-> *"11 tables, 228 rows of seed data."*
+Or step by step:
 
-**Run rejection test** (the most impressive part):
+**Step 2a — Show 11 tables + row counts:**
+
+```sql
+SELECT table_name FROM user_tables ORDER BY table_name;
+```
+
+> *"11 tables — all normalized to 3NF. 228 rows of seed data total."*
+
+**Step 2b — Run rejection test** (the most impressive part):
 
 ```sql
 -- Try to insert a president who isn't a member yet
@@ -135,7 +140,7 @@ ORDER BY advisor_name;
 |----------|--------|
 | "Why did you add EVENT_REGISTRATION?" | *"Because attending an event is different from being a club member. A student can be a member but not attend — separate table captures both facts."* |
 | "Why not put president in CLUB table?" | *"Then I couldn't enforce that the president must be a member. With CLUB_PRESIDENT, I use a composite FK to MEMBERSHIP."* |
-| "What tool did you use?" | *"Oracle Live SQL — free, no install needed. I also tested the script in SQL*Plus."* |
+| "What tool did you use?" | *"I developed in Oracle Live SQL and SQL*Plus. This demo runs Oracle Database Free in Docker inside a GitHub Codespace — everything is in one window."* |
 | "Did you use AI?" | *"I used it for brainstorming ideas and debugging syntax, but I wrote and understand every line. The design decisions are mine."* |
 | "What normalization level?" | *"3NF. MEMBERSHIP resolves M:N, no transitive dependencies — faculty name is in FACULTY, not repeated in STUDENT."* |
 
@@ -150,3 +155,12 @@ ORDER BY advisor_name;
 **Your 6 queries:** phone list, multi-club advisors, missing forms, event schedule, pivot table, club assignments
 
 **Your DB:** Oracle AI Database 26ai Free 23.26.2.0.0
+
+## Terminal Quick Reference (copy-paste these)
+
+| What | Command |
+|------|---------|
+| Run all proof queries | `docker exec -i oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 < demo_queries.sql` |
+| Interactive SQL | `docker exec -it oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1` |
+| Run your build script | `./run_sql.sh` |
+| Check Oracle is alive | `docker exec oracle-demo sqlplus system/oracle@//localhost:1521/FREEPDB1 "SELECT 1 FROM dual;"` |
